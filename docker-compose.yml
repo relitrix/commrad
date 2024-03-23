@@ -16,10 +16,10 @@ services:
     ports:
       - 3306:27017
     volumes:
-      - 'mongo_db:/data/db'
-      - 'mongo_configdb:/data/configdb'
+      - 'trackcombot-mongo_db:/data/db'
+      - 'trackcombot-mongo_configdb:/data/configdb'
 volumes:
-  mongo_db:
-    name: 'mongo_db'
-  mongo_configdb:
-    name: 'mongo_configdb'
+  trackcombot-mongo_db:
+    name: 'trackcombot-mongo_db'
+  trackcombot-mongo_configdb:
+    name: 'trackcombot-mongo_configdb'
