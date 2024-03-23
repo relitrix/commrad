@@ -1,0 +1,13 @@
+{
+  "name": "trackcombot",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "author": "relitrix",
+  "license": "UNLICENSED",
+  "description": "",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {}
+}
