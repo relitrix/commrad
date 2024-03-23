@@ -8,11 +8,15 @@ module.exports = {
     execute: async (client) => {
         console.log(`Ready! Looogged in as ${client.user.tag}`);
         require("../deploy-commands")(client.user.id)
-
-        const youtube = await Innertube.create({})
+        try {
+            const youtube = await Innertube.create({})
+            process.youtube = youtube
+            console.log("Connected to YouTube.")
+        } catch (e) {
+            throw "Failed to connect YouTube... Check ready.js:12"
+        }
         process.disClient = client
         process.mongo = require('../mongodb')
-        process.youtube = youtube
 
         client.user.setPresence({
             activities: [{ name: `v${version}`, type: ActivityType.Custom }],

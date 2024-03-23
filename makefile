@@ -1,5 +1,6 @@
 run:
 	@docker compose down
+	@docker image prune -f
 	@docker compose up -d --build
 	@docker attach trackcombot
 stop:
