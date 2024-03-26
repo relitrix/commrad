@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChannelType, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, ChannelType, EmbedBuilder, escapeMarkdown } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,7 +20,7 @@ module.exports = {
         })
         await Promise.all(promises)
         const embed = new EmbedBuilder()
-            .setDescription(Pairs.map(({ discordChannel, youtubeChannel }, i) => `${i + 1}. <:disc:1221228641946566858> <#${discordChannel}> ↔️ <:yt:1221228661068533770> [${youtubeChannelNames.get(youtubeChannel)}](https://www.youtube.com/channel/${youtubeChannel})\n`).join(''))
+            .setDescription(Pairs.map(({ discordChannel, youtubeChannel }, i) => `${i + 1}. <:disc:1221228641946566858> <#${discordChannel}> ↔️ <:yt:1221228661068533770> ${escapeMarkdown(youtubeChannelNames.get(youtubeChannel))} [(link)](https://www.youtube.com/channel/${youtubeChannel})\n`).join(''))
         await interaction.editReply({ embeds: [embed] });
     },
 };
