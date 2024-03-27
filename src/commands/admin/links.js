@@ -11,6 +11,7 @@ module.exports = {
         const { GuildSchema } = process.mongo
         const options = interaction.options
         const { Pairs } = await GuildSchema.findOne({ Guild: interaction.guild.id }, { Pairs: 1 })
+        if (!Pairs.length) return await interaction.editReply({ content: `No links. Try to create with </pair:${process.disCmds.pair}>.` });
         const youtube = process.youtube
         let youtubeChannelNames = new Map()
         const promises = []
