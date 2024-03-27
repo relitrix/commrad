@@ -6,7 +6,7 @@ build-and-run:
 run:
 	@docker compose down
 	@docker compose up -d
-	@docker attack trackcombot
+	@docker attach trackcombot
 stop:
 	@docker compose down
 push-vault:
