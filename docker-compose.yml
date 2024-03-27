@@ -13,7 +13,7 @@ services:
     tty: true
   mongo:
     container_name: mongo
-    image: mongo:jammy
+    image: mongo:7-jammy
     restart: unless-stopped
     ports:
       - 3306:27017
