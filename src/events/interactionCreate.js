@@ -21,7 +21,7 @@ module.exports = {
             command = interaction.client.commands.get(interaction.commandName);
             if (!command) {
                 console.error(`No command matching ${interaction.commandName} was found.`);
-                await sendMessage(`Команда \`${interaction.commandName}\` не найдена!`, interaction)
+                await sendMessage(`Command \`${interaction.commandName}\` not found!`, interaction)
                 return;
             }
         }
@@ -31,7 +31,7 @@ module.exports = {
             command = interaction.client.interactions.get(id[0]);
             if (!command) {
                 console.error(`No interaction matching ${interaction.customId} was found.`);
-                await sendMessage(`Действие \`${interaction.customId}\` не найдено!`, interaction)
+                await sendMessage(`Interaction \`${interaction.customId}\` not found!`, interaction)
                 return;
             }
         }
@@ -44,7 +44,7 @@ module.exports = {
             await command.execute(interaction);
         } catch (error) {
             console.error(error);
-            await sendMessage("Ошибка при выполнении этого взаимодействия!", interaction)
+            await sendMessage("An error occured. Incident reported.", interaction)
         }
     }
 }
