@@ -8,7 +8,7 @@ module.exports = async (videoId, pages) => {
     do {
         page++
         comms = [].concat(comms, comments.contents
-            .filter(thread => !thread.comment.author_is_channel_owner)
+            .filter(thread => !thread.comment?.author_is_channel_owner && thread.comment)
             .map(thread => {
                 return {
                     id: thread.comment.comment_id,

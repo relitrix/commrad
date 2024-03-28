@@ -4,6 +4,6 @@ const Schema = new mongo.Schema({
     Guild: String,
     DataVersion: Number,
 
-    Pairs: Array
+    Pairs: [Object],
 });
 module.exports = mongo.model('guilds', Schema);

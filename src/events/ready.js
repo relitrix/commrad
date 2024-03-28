@@ -9,7 +9,7 @@ module.exports = {
         console.log(`Ready! Looogged in as ${client.user.tag}`);
         require("../deploy-commands")(client.user.id)
         try {
-            const youtube = await Innertube.create({})
+            const youtube = await Innertube.create({ retrieve_player: false })
             process.youtube = youtube
             console.log("Connected to YouTube.")
         } catch (e) {
