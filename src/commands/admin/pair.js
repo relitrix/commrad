@@ -43,6 +43,6 @@ module.exports = {
 
 
         const result = await GuildSchema.updateOne({ Guild: interaction.guild.id }, { $push: { Pairs: { discordChannel: options.getChannel('discord').id, youtubeChannel: resolve.payload.browseId, date: new Date() } } })
-        await interaction.editReply({ content: `✅ Added successfully.\nAll new comments from last ${limits.videos} videos of [this channel](${options.getString('youtube')}) will go to <#${options.getChannel('discord').id}>` });
+        await interaction.editReply({ content: `✅ Added successfully.\nAll new comments will go to <#${options.getChannel('discord').id}>` });
     },
 };
