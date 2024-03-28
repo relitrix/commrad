@@ -10,6 +10,7 @@
     "bree": "^9.2.2",
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
-    "mongoose": "^8.2.3"
+    "mongoose": "^8.2.3",
+    "youtubei.js": "^9.1.0"
   }
 }
