@@ -1,26 +1,21 @@
-const chrono = require('chrono-node');
+const youtube = require('@googleapis/youtube')
+const { api } = require("../context")
 
-module.exports = async (videoId, pages) => {
-    const youtube = process.youtube
-    let comments = await youtube.getComments(videoId, "NEWEST_FIRST")
-    let comms = []
-    let page = 1
-    do {
-        page++
-        comms = [].concat(comms, comments.contents
-            .filter(thread => !thread.comment?.author_is_channel_owner && thread.comment)
-            .map(thread => {
-                return {
-                    id: thread.comment.comment_id,
-                    date: chrono.parseDate(thread.comment.published.text.replace('(edited)', '')),
-                    content: thread.comment.content.text,
-                    authorName: thread.comment.author.name,
-                    authorPic: thread.comment.author.thumbnails[0].url
-                }
-            }))
-        if (comments.has_continuation && page <= pages) {
-            comments = await comments.getContinuation()
-        }
-    } while (comments.has_continuation && page <= pages)
-    return comms
+const ytclient = youtube.youtube(api)
+
+module.exports = async (channelId) => {
+    let comments = await ytclient.commentThreads.list({ allThreadsRelatedToChannelId: channelId, part: ['snippet'], order: 'time', maxResults: 60 })
+    return comments.data.items
+        .map(({ snippet }) => {
+            const comment = snippet.topLevelComment
+            return {
+                id: comment.id,
+                date: new Date(comment.snippet.publishedAt),
+                content: comment.snippet.textDisplay,
+                authorName: comment.snippet.authorDisplayName,
+                authorPic: comment.snippet.authorProfileImageUrl,
+                authorLink: comment.snippet.authorChannelUrl,
+                vidId: comment.snippet.videoId
+            }
+        })
 }
