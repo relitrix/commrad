@@ -6,11 +6,14 @@ module.exports = async () => {
     const chunkArray = require('../utils/chunkArray')
 
     async function makeEmbeds(newComms) {
+        const videobasicInfos = new Map()
         const promises = newComms.map(async comm => {
             let basicInfo = null
             try {
-                if (comm.vidId)
-                    basicInfo = await process.youtube.getBasicInfo(comm.vidId)
+                if (comm.vidId) {
+                    basicInfo = videobasicInfos.get(comm.vidId) ?? await process.youtube.getBasicInfo(comm.vidId)
+                    videobasicInfos.set(comm.vidId, basicInfo)
+                }
             } catch (e) {
                 console.log("Failed to get basicInfo")
                 console.error(e)

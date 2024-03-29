@@ -29,7 +29,6 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true })
 
         const resolve = await youtube.resolveURL(options.getString('youtube'))
-        console.log(resolve)
         if (resolve.metadata?.page_type !== 'WEB_PAGE_TYPE_CHANNEL') return interaction.editReply({ content: "### ⚠️ Something wrong with YouTube link. It should be like this: `https://www.youtube.com/@MrBeast`" })
 
         const { count } = await GuildSchema.aggregate([
@@ -40,10 +39,8 @@ module.exports = {
                 }
             }
         ]).then(result => result[0])
-        console.log(count)
         if (count >= limits.channels) return interaction.editReply({ content: `### ⚠️ You have reached limit of ${limits.channels} channel(s) for Discord server.` })
         const pairInfo = await GuildSchema.findOne({ Guild: interaction.guild.id, Pairs: { $elemMatch: { youtubeChannel: resolve.payload.browseId } } }, { "Pairs.$": 1 })
-        console.log(pairInfo)
         if (pairInfo) return interaction.editReply({ content: `### ⚠️ This YouTube channel already paired with <#${pairInfo.Pairs[0].discordChannel}>` })
 
         const result = await GuildSchema.updateOne({ Guild: interaction.guild.id }, { $push: { Pairs: { discordChannel: options.getChannel('discord').id, youtubeChannel: resolve.payload.browseId, date: new Date() } } })
