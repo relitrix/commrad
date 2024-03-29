@@ -37,6 +37,6 @@ module.exports = {
         const { AgendaScheduler } = process.mongo
         await AgendaScheduler.start()
         AgendaScheduler.define("commentsWave", require(path.resolve(__dirname, "../jobs/commentsWave")))
-        AgendaScheduler.every("10 minutes", "commentsWave")
+        AgendaScheduler.every("5 minutes", "commentsWave")
     }
 }

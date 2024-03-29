@@ -1,4 +1,3 @@
 module.exports = {
-    videos: 50,
-    channels: 1
+    channels: 3
 }

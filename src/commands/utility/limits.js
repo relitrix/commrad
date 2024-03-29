@@ -6,6 +6,6 @@ module.exports = {
         .setName('limits')
         .setDescription('Get current limits.'),
     async execute(interaction) {
-        await interaction.reply({ content: `Channels: ${limits.channels}\nVideos: ${limits.videos}`, ephemeral: true });
+        await interaction.reply({ content: `Max YouTube channels for guild: ${limits.channels}`, ephemeral: true });
     },
 };

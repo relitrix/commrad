@@ -39,7 +39,9 @@ module.exports = {
         ]).then(result => result[0])
         console.log(count)
         if (count >= limits.channels) return interaction.editReply({ content: `### ⚠️ You have reached limit of ${limits.channels} channel(s) for Discord server.` })
-        if (await GuildSchema.findOne({ Guild: interaction.guild.id, Pairs: { discordChannel: options.getChannel('discord').id, youtubeChannel: resolve.payload.browseId } })) return interaction.editReply({ content: "### ⚠️ This pair already exists." })
+        const pairInfo = await GuildSchema.findOne({ Guild: interaction.guild.id, Pairs: { $elemMatch: { youtubeChannel: resolve.payload.browseId } } }, { "Pairs.$": 1 })
+        console.log(pairInfo)
+        if (pairInfo) return interaction.editReply({ content: `### ⚠️ This YouTube channel already paired with <#${pairInfo.Pairs[0].discordChannel}>` })
 
 
         const result = await GuildSchema.updateOne({ Guild: interaction.guild.id }, { $push: { Pairs: { discordChannel: options.getChannel('discord').id, youtubeChannel: resolve.payload.browseId, date: new Date() } } })
