@@ -49,7 +49,12 @@ module.exports = async () => {
                 return await GuildSchema.updateOne({ Guild: guild.id, Pairs: { $elemMatch: { discordChannel: pair.discordChannel, youtubeChannel: pair.youtubeChannel } } }, { "Pairs.$[].date": new Date() })
             })
         })
-        return await Promise.all(pairPromises)
+        return await Promise.allSettled(pairPromises)
     })
-    await Promise.all(guildPromises)
+    const results = await Promise.all(guildPromises)
+    results.forEach((guild) => {
+        guild.filter(guild => guild.status === 'rejected').forEach(pair => {
+            console.log(pair.reason)
+        })
+    })
 }

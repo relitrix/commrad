@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ChannelType } = require('discord.js');
+const { SlashCommandBuilder, ChannelType, PermissionFlagsBits } = require('discord.js');
 const limits = require('../../limits')
 
 module.exports = {
@@ -23,6 +23,9 @@ module.exports = {
         const options = interaction.options
         const youtube = process.youtube
 
+        const textchannel = options.getChannel('discord')
+        if (!textchannel.permissionsFor(interaction.guild.members.me).has(PermissionFlagsBits.SendMessages + PermissionFlagsBits.ViewChannel + PermissionFlagsBits.EmbedLinks)) return await interaction.reply({ content: "### ⚠️ I don't have permissions to send messages in this channel.", ephemeral: true })
+
         await interaction.deferReply({ ephemeral: true })
 
         const resolve = await youtube.resolveURL(options.getString('youtube'))
@@ -42,7 +45,6 @@ module.exports = {
         const pairInfo = await GuildSchema.findOne({ Guild: interaction.guild.id, Pairs: { $elemMatch: { youtubeChannel: resolve.payload.browseId } } }, { "Pairs.$": 1 })
         console.log(pairInfo)
         if (pairInfo) return interaction.editReply({ content: `### ⚠️ This YouTube channel already paired with <#${pairInfo.Pairs[0].discordChannel}>` })
-
 
         const result = await GuildSchema.updateOne({ Guild: interaction.guild.id }, { $push: { Pairs: { discordChannel: options.getChannel('discord').id, youtubeChannel: resolve.payload.browseId, date: new Date() } } })
         await interaction.editReply({ content: `✅ Added successfully.\nAll new comments will go to <#${options.getChannel('discord').id}>` });
