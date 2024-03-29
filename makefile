@@ -3,10 +3,6 @@ build-and-run:
 	@docker image prune -f
 	@docker compose up -d --build
 	@docker attach trackcombot
-deploy:
-	@docker-compose --context remote -f docker-compose-production.yml up -d --build
-prod-stop:
-	@docker-compose --context remote -f docker-compose-production.yml down
 run:
 	@docker compose down
 	@docker compose up -d
@@ -19,3 +15,10 @@ pull-vault:
 	@npx dotenv-vault pull
 open-vault:
 	@npx dotenv-vault open
+deploy:
+	@docker-compose --context remote -f docker-compose-production.yml down
+	@docker-compose --context remote -f docker-compose-production.yml up -d --build
+prod-run:
+	@docker-compose --context remote -f docker-compose-production.yml up -d
+prod-stop:
+	@docker-compose --context remote -f docker-compose-production.yml down
