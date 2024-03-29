@@ -3,6 +3,10 @@ build-and-run:
 	@docker image prune -f
 	@docker compose up -d --build
 	@docker attach trackcombot
+deploy:
+	@docker-compose --context remote -f docker-compose-production.yml up -d --build
+prod-stop:
+	@docker-compose --context remote -f docker-compose-production.yml down
 run:
 	@docker compose down
 	@docker compose up -d
