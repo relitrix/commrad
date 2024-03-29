@@ -1,10 +1,11 @@
-module.exports = async (client) => {
+module.exports = async () => {
+    const client = process.disClient
     const { GuildSchema } = process.mongo
     const fetchComms = require('../utils/fetchComms')
     const buildEmbed = require('../utils/buildEmbed')
     const chunkArray = require('../utils/chunkArray')
 
-    async function embeds(newComms) {
+    async function makeEmbeds(newComms) {
         const promises = newComms.map(async comm => {
             let basicInfo = null
             try {
@@ -31,27 +32,24 @@ module.exports = async (client) => {
 
     const guildAndPair = await GuildSchema.find({ Pairs: { $exists: true, $not: { $size: 0 } } }, { Guild: 1, Pairs: 1 })
 
-    guildAndPair.forEach(async (obj) => {
-        try {
-            const guild = await client.guilds.fetch(obj.Guild)
-            obj.Pairs.forEach(async pair => {
-                const discordChannel = await guild.channels.fetch(pair.discordChannel)
-                fetchComms(pair.youtubeChannel).then(result => {
-                    if (!result.length) return
-                    const newComms = result.filter(comm => comm.date > pair.date)
-                    embeds(newComms).then((results) => {
-                        const chunks = chunkArray(results, 10)
-                        chunks.forEach(async chunk => {
-                            await discordChannel.send({ embeds: chunk })
-                        })
-                    })
-                }).then(async () => {
-                    await GuildSchema.updateOne({ Guild: guild.id, Pairs: { $elemMatch: { discordChannel: pair.discordChannel, youtubeChannel: pair.youtubeChannel } } }, { "Pairs.$[].date": new Date() })
-                })
 
+    const guildPromises = guildAndPair.map(async (obj) => {
+        const guild = await client.guilds.fetch(obj.Guild)
+        const pairPromises = obj.Pairs.map(async pair => {
+            const discordChannel = await guild.channels.fetch(pair.discordChannel)
+            return await fetchComms(pair.youtubeChannel).then(async result => {
+                if (!result.length) return
+                const newComms = result.filter(comm => comm.date > pair.date)
+                const embeds = await makeEmbeds(newComms)
+                const chunks = chunkArray(embeds, 10)
+                const messagePromises = chunks.map(async chunk => {
+                    await discordChannel.send({ embeds: chunk })
+                })
+                await Promise.all(messagePromises)
+                return await GuildSchema.updateOne({ Guild: guild.id, Pairs: { $elemMatch: { discordChannel: pair.discordChannel, youtubeChannel: pair.youtubeChannel } } }, { "Pairs.$[].date": new Date() })
             })
-        } catch (e) {
-            return console.error(e)
-        }
+        })
+        return await Promise.all(pairPromises)
     })
+    await Promise.all(guildPromises)
 }
