@@ -40,7 +40,7 @@ for (const file of eventFiles) {
 }
 
 
-client.interactions = new Collection();
+/* client.interactions = new Collection();
 const interactionsPath = path.join(__dirname, 'interactions');
 const interactionsFiles = fs.readdirSync(interactionsPath).filter(file => file.endsWith('.js'));
 for (const file of interactionsFiles) {
@@ -52,6 +52,6 @@ for (const file of interactionsFiles) {
     } else {
         console.log(`[WARNING] The interaction at ${filePath} is missing a required "id" or "execute" property.`);
     }
-}
+} */
 
 client.login(TOKEN);
