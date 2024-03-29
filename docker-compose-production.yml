@@ -1,7 +1,6 @@
 version: '3.8'
 services:
   trackcombot:
-  container_name: trackcombot
     image: ghcr.io/relitrix/trackcombot:latest
     restart: always
     env_file:
@@ -20,7 +19,6 @@ services:
       - 'trackcombot-mongo_db:/data/db'
       - 'trackcombot-mongo_configdb:/data/configdb'
   watchtower:
-    container_name: watchtower
     image: containrrr/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

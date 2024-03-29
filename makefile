@@ -19,6 +19,7 @@ deploy:
 	@docker-compose --context remote -f docker-compose-production.yml down
 	@docker-compose --context remote -f docker-compose-production.yml up -d --build
 prod-run:
+	@docker --context remote pull ghcr.io/relitrix/trackcombot:latest
 	@docker-compose --context remote -f docker-compose-production.yml up -d
 prod-stop:
 	@docker-compose --context remote -f docker-compose-production.yml down
