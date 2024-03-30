@@ -1,0 +1,25 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}:latest
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Docker Login
+      run: echo "${{ secrets.GH_TOKEN }}" | docker login ${{ env.REGISTRY }} --username cloud-native-everything --password-stdin
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    - name: Docker Push
+      run: docker push  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
