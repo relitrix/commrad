@@ -46,7 +46,7 @@ module.exports = async () => {
                 if (!result.length) return
                 const newComms = result.filter(comm => comm.date > pair.date)
                 const embeds = await makeEmbeds(newComms, { name: youtubeChannel?.metadata?.title, pic: youtubeChannel?.metadata?.thumbnail[0]?.url })
-                const chunks = chunkArray(embeds, 10)
+                const chunks = chunkArray(embeds.reverse(), 10)
                 const messagePromises = chunks.map(async chunk => {
                     await discordChannel.send({ embeds: chunk })
                 })
