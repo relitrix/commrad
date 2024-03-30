@@ -20,7 +20,7 @@ module.exports = {
         }])
         console.log(result)
         await interaction.reply({
-            content: `Guild:\n> Sended comments: ${guildData.Stats.Sended}\nGlobal:\n> Sended comments: ${result[0].sended}`, ephemeral: true
+            content: `Guild:\n> Sent comments: ${guildData.Stats.Sended}\nGlobal:\n> Sent comments: ${result[0].sended}`, ephemeral: true
         });
     },
 };
