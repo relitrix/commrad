@@ -38,5 +38,8 @@ module.exports = {
         await AgendaScheduler.start()
         AgendaScheduler.define("commentsWave", require(path.resolve(__dirname, "../jobs/commentsWave")))
         AgendaScheduler.every("5 minutes", "commentsWave")
+        AgendaScheduler.on('fail', (err, job) => {
+            console.error(err)
+        });
     }
 }
