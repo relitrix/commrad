@@ -5,7 +5,7 @@ module.exports = async () => {
     const buildEmbed = require('../utils/buildEmbed')
     const chunkArray = require('../utils/chunkArray')
 
-    async function makeEmbeds(newComms) {
+    async function makeEmbeds(newComms, creator = {}) {
         const videobasicInfos = new Map()
         const promises = newComms.map(async comm => {
             let basicInfo = null
@@ -26,7 +26,8 @@ module.exports = async () => {
                 content: comm.content,
                 date: comm.date,
                 vidLink: basicInfo ? `https://youtube.com/watch?v=${comm.vidId}&lc=${comm.id}` : null,
-                vidThumbnail: basicInfo?.basic_info?.thumbnail[0].url
+                vidThumbnail: basicInfo?.basic_info?.thumbnail[0].url,
+                creator: creator
             })
         })
         return await Promise.all(promises)
@@ -40,10 +41,11 @@ module.exports = async () => {
         const guild = await client.guilds.fetch(obj.Guild)
         const pairPromises = obj.Pairs.map(async pair => {
             const discordChannel = await guild.channels.fetch(pair.discordChannel)
+            const youtubeChannel = await process.youtube.getChannel(pair.youtubeChannel)
             return await fetchComms(pair.youtubeChannel).then(async result => {
                 if (!result.length) return
                 const newComms = result.filter(comm => comm.date > pair.date)
-                const embeds = await makeEmbeds(newComms)
+                const embeds = await makeEmbeds(newComms, { name: youtubeChannel?.metadata?.title, pic: youtubeChannel?.metadata?.thumbnail[0]?.url })
                 const chunks = chunkArray(embeds, 10)
                 const messagePromises = chunks.map(async chunk => {
                     await discordChannel.send({ embeds: chunk })
