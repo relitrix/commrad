@@ -21,3 +21,16 @@ jobs:
       run: docker build . --file Dockerfile --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
     - name: Docker Push
       run: docker push  ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+  deployment:
+
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'http://${{ vars.HOST }}/v1/update'
+        method: 'GET'
+        customHeaders: '{"Authorization": "Bearer ${{ secrets.WATCHTOWER_HTTP_API_TOKEN }}"}'
+        timeout: 120000
