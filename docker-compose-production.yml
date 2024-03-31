@@ -9,6 +9,8 @@ services:
       - mongo
     stdin_open: true
     tty: true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
   mongo:
     container_name: mongo
     image: mongo:7-jammy
@@ -20,9 +22,16 @@ services:
       - 'trackcombot-mongo_configdb:/data/configdb'
   watchtower:
     image: containrrr/watchtower
+    command: --debug --http-api-update
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ~/.docker/config.json:/config.json
+      - /home/ubuntu/.docker/config.json:/config.json
+    env_file:
+      - .env.production
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    ports:
+      - 8075:8080
 volumes:
   trackcombot-mongo_db:
     name: 'trackcombot-mongo_db'
