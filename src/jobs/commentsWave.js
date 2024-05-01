@@ -1,10 +1,10 @@
+const fetchComms = require('../utils/fetchComms')
+const buildEmbed = require('../utils/buildEmbed')
+const chunkArray = require('../utils/chunkArray')
+
 module.exports = async () => {
     const client = process.disClient
     const { GuildSchema } = process.mongo
-    const fetchComms = require('../utils/fetchComms')
-    const buildEmbed = require('../utils/buildEmbed')
-    const chunkArray = require('../utils/chunkArray')
-
     async function makeEmbeds(newComms, creator = {}) {
         const videobasicInfos = new Map()
         const promises = newComms.map(async comm => {
