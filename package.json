@@ -1,6 +1,6 @@
 {
   "name": "trackcombot",
-  "version": "1.0.2-b",
+  "version": "1.0.3-c",
   "main": "src/index.js",
   "author": "relitrix",
   "license": "UNLICENSED",
@@ -11,6 +11,6 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.4.5",
     "mongoose": "^8.2.3",
-    "youtubei.js": "^9.1.0"
+    "youtubei.js": "^10.4.0"
   }
 }
