@@ -26,7 +26,7 @@ module.exports = async () => {
                 content: comm.content,
                 date: comm.date,
                 vidLink: basicInfo ? `https://youtube.com/watch?v=${comm.vidId}&lc=${comm.id}` : null,
-                vidThumbnail: basicInfo?.basic_info?.thumbnail[0].url,
+                vidThumbnail: basicInfo?.basic_info?.thumbnail?.[0]?.url,
                 creator: creator
             })
         })
