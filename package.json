@@ -1,6 +1,6 @@
 {
   "name": "trackcombot",
-  "version": "1.0.3-d",
+  "version": "1.0.4",
   "main": "src/index.js",
   "author": "relitrix",
   "license": "UNLICENSED",
