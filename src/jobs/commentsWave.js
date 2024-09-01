@@ -1,12 +1,17 @@
 const fetchComms = require('../utils/fetchComms')
 const buildEmbed = require('../utils/buildEmbed')
 const chunkArray = require('../utils/chunkArray')
+const fetchVideos = require('../utils/fetchVideos')
 
 module.exports = async () => {
     const client = process.disClient
     const { GuildSchema } = process.mongo
     async function makeEmbeds(newComms, creator = {}) {
+        if (newComms.length < 1) {
+            return;
+        }
         // const videobasicInfos = new Map()
+        const videos = await fetchVideos(newComms.map(c => c.vidId));
         const promises = newComms.map(async comm => {
             /* let basicInfo = null
             try {
@@ -18,15 +23,16 @@ module.exports = async () => {
                 console.log("Failed to get basicInfo")
                 console.error(e)
             } */
+           const video = videos.get(comm.vidId)
             return buildEmbed({
-                title: 'Link to video',
+                title: video?.title ?? 'Link to video',
                 authorLink: comm.authorLink,
                 authorName: comm.authorName,
                 authorPic: comm.authorPic,
                 content: comm.content,
                 date: comm.date,
                 vidLink: `https://youtube.com/watch?v=${comm.vidId}&lc=${comm.id}`,
-                vidThumbnail: null,
+                vidThumbnail: video?.thumbnails?.medium?.url ?? null,
                 creator: creator
             })
         })
