@@ -6,9 +6,9 @@ module.exports = async () => {
     const client = process.disClient
     const { GuildSchema } = process.mongo
     async function makeEmbeds(newComms, creator = {}) {
-        const videobasicInfos = new Map()
+        // const videobasicInfos = new Map()
         const promises = newComms.map(async comm => {
-            let basicInfo = null
+            /* let basicInfo = null
             try {
                 if (comm.vidId) {
                     basicInfo = videobasicInfos.get(comm.vidId) ?? await process.youtube.getBasicInfo(comm.vidId)
@@ -17,15 +17,15 @@ module.exports = async () => {
             } catch (e) {
                 console.log("Failed to get basicInfo")
                 console.error(e)
-            }
+            } */
             return buildEmbed({
-                title: basicInfo?.basic_info?.title,
+                title: 'Link to video',
                 authorLink: comm.authorLink,
                 authorName: comm.authorName,
                 authorPic: comm.authorPic,
                 content: comm.content,
                 date: comm.date,
-                vidLink: basicInfo ? `https://youtube.com/watch?v=${comm.vidId}&lc=${comm.id}` : null,
+                vidLink: `https://youtube.com/watch?v=${comm.vidId}&lc=${comm.id}`,
                 vidThumbnail: basicInfo?.basic_info?.thumbnail?.[0]?.url,
                 creator: creator
             })
