@@ -4,7 +4,7 @@ const { api } = require("../context")
 const ytclient = youtube.youtube(api)
 
 module.exports = async (channelId) => {
-    let comments = await ytclient.commentThreads.list({ allThreadsRelatedToChannelId: channelId, part: ['snippet'], order: 'time', maxResults: 100, textFormat: 'plaintext' })
+    let comments = await ytclient.commentThreads.list({ allThreadsRelatedToChannelId: channelId, part: ['snippet'], order: 'time', maxResults: 50, textFormat: 'plaintext' })
     return comments.data.items
         .map(({ snippet }) => {
             const comment = snippet.topLevelComment
