@@ -15,8 +15,10 @@ module.exports = async () => {
                     videobasicInfos.set(comm.vidId, basicInfo)
                 }
             } catch (e) {
-                console.log("Failed to get basicInfo")
                 console.error(e)
+            }
+            if (!basicInfo?.basicInfo?.title || !basicInfo?.basic_info?.thumbnail?.[0]?.url) {
+                console.log(`Failed to fetch basicInfo.\nmapSize: ${videobasicInfos.size}\nlastMapItem: ${JSON.stringify(videobasicInfos.pop(), undefined, 4)}\nvideoId: ${comm.vidId}\nbasicInfo:${JSON.stringify(basicInfo, undefined, 4)}`)
             }
             return buildEmbed({
                 title: basicInfo?.basic_info?.title,
