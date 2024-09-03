@@ -8,7 +8,7 @@ module.exports = async () => {
     const { GuildSchema } = process.mongo
     async function makeEmbeds(newComms, creator = {}) {
         if (newComms.length < 1) {
-            return;
+            return [];
         }
         // const videobasicInfos = new Map()
         const videos = await fetchVideos(newComms.map(c => c.vidId));
