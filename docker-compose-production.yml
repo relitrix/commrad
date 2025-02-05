@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   trackcombot:
-    image: ghcr.io/relitrix/trackcombot:latest
+    image: ghcr.io/relitrix/commrad:latest
     restart: always
     env_file:
       - .env.production
